@@ -49,7 +49,6 @@ const createTimeInEvent = (record, timestamp) => record.clockIn(timestamp);
 const createTimeOutEvent = (record, timestamp) => record.clockOut(timestamp);
 
 const hoursWorkedOnDate = ({ timeInEvents, timeOutEvents }, date) => {
-    debugger;
     const i = timeInEvents.findIndex(event => event.date === date);
     const [hourIn, hourOut] = [timeInEvents[i].hour, timeOutEvents[i].hour];
     if (!hourIn || !hourOut) return console.error("date does not exist");
@@ -61,13 +60,23 @@ const wagesEarnedOnDate = ({timeInEvents, timeOutEvents, payPerHour}, date) => {
     return hours * payPerHour;
 };
 
-const allWagesFor = ({timeInEvents, timeOutEvents, payPerHour}) => {
-    timeInEvents.map(event => {
-        
-    })
+const allWagesFor = employee => {
+    return employee.timeInEvents.map(({date}) => {
+        return wagesEarnedOnDate(employee, date)}).reduce((total, num) => (total + num), 0)
 }
 
-let cRecord = createEmployeeRecord(["Julius", "Caesar", "General", 1000])
-let updatedBpRecord = createTimeInEvent(cRecord, "0044-03-15 0900")
-updatedBpRecord = createTimeOutEvent(cRecord, "0044-03-15 1100")
-let dateToCheck = "0044-03-05"
+const calculatePayroll = employees => employees.reduce((total, employee) => total + allWagesFor(employee), 0)
+
+
+// for testing purposes
+const testFun1 = () => {
+    cRecord = createEmployeeRecord(["Julius", "Caesar", "General", 27])
+    // Earns 324
+    updatedBpRecord = createTimeInEvent(cRecord, "0044-03-14 0900")
+    updatedBpRecord = createTimeOutEvent(cRecord, "0044-03-14 2100")
+    // Earns 54
+    updatedBpRecord = createTimeInEvent(cRecord, "0044-03-15 0900")
+    updatedBpRecord = createTimeOutEvent(cRecord, "0044-03-15 1100")
+    // 324 + 54
+    console.log(allWagesFor(cRecord));
+}

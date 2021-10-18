@@ -8,26 +8,26 @@ class Employee {
     this.timeOutEvents = [];
   }
   clockIn(timestamp) {
-    const [date, hour] = timestamp.split(" ");
-    this.timeInEvents.push(new TimeInEvent(date, +hour));
+    this.timeInEvents.push(new TimeInEvent(timestamp));
     return this;
   }
   clockOut(timestamp) {
-    const [date, hour] = timestamp.split(" ");
-    this.timeOutEvents.push(new TimeOutEvent(date, +hour));
+    this.timeOutEvents.push(new TimeOutEvent(timestamp));
     return this;
   }
 }
 
 class TimeInEvent {
-  constructor(date, hour) {
-    this.type = "TimeIn";
-    this.date = date;
-    this.hour = +hour;
+  constructor(timestamp) {
+      const [date, hour] = timestamp.split(" ");
+      this.type = "TimeIn";
+      this.date = date;
+      this.hour = +hour;
   }
 }
 class TimeOutEvent {
-  constructor(date, hour) {
+  constructor(timestamp) {
+    const [date, hour] = timestamp.split(" ");
     this.type = "TimeOut";
     this.date = date;
     this.hour = +hour;
@@ -48,8 +48,7 @@ const createTimeOutEvent = (record, timestamp) => record.clockOut(timestamp);
 
 const hoursWorkedOnDate = ({ timeInEvents, timeOutEvents }, date) => {
   const i = timeInEvents.findIndex(event => event.date === date);
-  const [hourIn, hourOut] = [timeInEvents[i].hour, timeOutEvents[i].hour];
-  if (!hourIn || !hourOut) return console.error("date does not exist");
+  const [hourIn, hourOut] = [timeInEvents[i].hour, timeOutEvents[i].hour || timeOutEvents[i + 1] + 2400];
   return (hourOut - hourIn) / 100;
 };
 

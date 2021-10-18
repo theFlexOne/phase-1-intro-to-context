@@ -160,6 +160,16 @@ describe("The payroll system", function () {
         expect(hoursWorkedOnDate(cRecord, "0044-03-15")).to.equal(2)
       })
     })
+
+    // trying to handle overnight shifts
+    // describe("hoursWorkedOnDate", function () {
+    //   it("calculates that the employee worked 8 hours, overnight", function () {
+    //     cRecord = createEmployeeRecord(["Julius", "Caesar", "General", 1000])
+    //     updatedBpRecord = createTimeInEvent(cRecord, "0044-03-15 2000")
+    //     updatedBpRecord = createTimeOutEvent(cRecord, "0044-03-16 400")
+    //     expect(hoursWorkedOnDate(cRecord, "0044-03-15")).to.equal(2)
+    //   })
+    // })
   })
 
   describe("Given an employee record with a date-matched timeInEvent and timeOutEvent", function () {
